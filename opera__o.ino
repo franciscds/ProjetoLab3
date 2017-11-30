@@ -87,7 +87,7 @@ void setup(){
 
   fuzzy->addFuzzyOutput(ve);
   
-  // Building FuzzyRule
+  // Building FuzzyRule if distancia MuitoPequena e Angulo Positivo Pequeno -> vd = baixa e ve = 0;
   FuzzyRuleAntecedent* distancePAndAnguloPequenoPositivo = new FuzzyRuleAntecedent();
   distanceCloseAndSpeedQuick->joinWithAND(dmuitoPequena, pPequeno);
   
@@ -95,8 +95,17 @@ void setup(){
   thenVdisBmAndVeZ->addOutput(vBaixa_d);
   thenVdisBmAndVeZ->addOutput(vZero_e);
 
-  FuzzyRule* fuzzyRule1 = new FuzzyRule(1, distancePAndAnguloPequenoPositivo, thenVdisBmAndVeZ);
+  FuzzyRule* fuzzyRule2 = new FuzzyRule(1, distancePAndAnguloPequenoPositivo, thenVdisBmAndVeZ);
   fuzzy->addFuzzyRule(fuzzyRule1);
+// if distancia pequena e Angulo Negativo pequeno
+   FuzzyRuleAntecedent* distancePAndAnguloPequenoNegativo = new FuzzyRuleAntecedent();
+  distanceCloseAndSpeedQuick->joinWithAND(dmuitoPequena, nPequeno);
+  
+  FuzzyRuleConsequent* thenVdisBmAndVeZ = new FuzzyRuleConsequent();
+  thenVdisBmAndVeZ->addOutput(vZero_d);
+  thenVdisBmAndVeZ->addOutput(vBaixa_e);
 
+  FuzzyRule* fuzzyRule2 = new FuzzyRule(2, distancePAndAnguloPequenoNegativo, thenVdisBmAndVeZ);
+  fuzzy->addFuzzyRule(fuzzyRule2);
  
   
