@@ -24,6 +24,7 @@ int j, id, x, y, phi, id_n, x_n, y_n, phi_n;
 String nos;
 String marcador;
 
+SoftwareSerial mySerial(10,11);
 //  - - - - - - -- - - - - -  *Controlador Fuzzy* - - - - - - - - - -- - - - - - - - - - - //
 Fuzzy* fuzzy = new Fuzzy();
 //Angulo
@@ -68,7 +69,7 @@ void setup(){
   angulo->addFuzzySet(nMedio);
   angulo->addFuzzySet(nGrande);
   
-  fuzzy->addFuzzyInput(distance);
+  fuzzy->addFuzzyInput(angulo);
 
   // FuzzyInput distancia
   FuzzyInput* dist = new FuzzyInput(2);
@@ -78,10 +79,10 @@ void setup(){
   dist->addFuzzySet(distanciaGrande);
   dist->addFuzzySet(distanciaMuitoGrande);
 
-  fuzzy->addFuzzyInput(inputSpeed);
+  fuzzy->addFuzzyInput(dist);
 
   // FuzzyOutput vd
-  FuzzyOutputt* vd = new Fuzzyoutput(1);
+  FuzzyOutput* vd = new FuzzyOutput(1);
   
   vd->addFuzzySet(vZero_d);
   vd->addFuzzySet(vBaixa_d);
@@ -93,7 +94,7 @@ void setup(){
 
 
   // FuzzyOutput ve
-  FuzzyOutputt* ve = new Fuzzyoutput(2);
+  FuzzyOutput* ve = new FuzzyOutput(2);
   
   ve->addFuzzySet(vZero_e);
   ve->addFuzzySet(vBaixa_e);
@@ -137,17 +138,17 @@ void setup(){
 
   FuzzyRule* fuzzyRule3 = new FuzzyRule(3, distancePAndAnguloPositivoGrande, thenVdisBmAndVeZ);
   fuzzy->addFuzzyRule(fuzzyRule3);
-  
+}
 // if distancia Pequena e Angulo Negativo pequeno
-   FuzzyRuleAntecedent* distancePequenaAndAnguloPequenoNegativo = new FuzzyRuleAntecedent();
-  distanceCloseAndSpeedQuick->joinWithAND(distanciaPequena, nPequeno);
-  
-  FuzzyRuleConsequent* thenVdisBmAndVeZ = new FuzzyRuleConsequent();
-  thenVdisBmAndVeZ->addOutput(vZero_d);
-  thenVdisBmAndVeZ->addOutput(vBaixa_e);
-
-  FuzzyRule* fuzzyRule2 = new FuzzyRule(2, distancePAndAnguloPequenoNegativo, thenVdisBmAndVeZ);
-  fuzzy->addFuzzyRule(fuzzyRule2);
+//   FuzzyRuleAntecedent* distancePequenaAndAnguloPequenoNegativo = new FuzzyRuleAntecedent();
+//  distanceCloseAndSpeedQuick->joinWithAND(distanciaPequena, nPequeno);
+//  
+//  FuzzyRuleConsequent* thenVdisBmAndVeZ = new FuzzyRuleConsequent();
+//  thenVdisBmAndVeZ->addOutput(vZero_d);
+//  thenVdisBmAndVeZ->addOutput(vBaixa_e);
+//
+//  FuzzyRule* fuzzyRule2 = new FuzzyRule(2, distancePAndAnguloPequenoNegativo, thenVdisBmAndVeZ);
+//  fuzzy->addFuzzyRule(fuzzyRule2);
  
   
   void loop(){
@@ -234,7 +235,7 @@ void setup(){
   Serial.print(", ");
   Serial.print(distanciaMedia->getPertinence());
   Serial.print(", ");
-  Serial.println(dDistanciaGrande->getPertinence());
+  Serial.println(distanciaGrande->getPertinence());
   
   Serial.print("Angulo: ");
   Serial.print(zero->getPertinence());
