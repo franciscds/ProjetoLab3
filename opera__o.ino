@@ -7,7 +7,24 @@
 #include <FuzzyIO.h>
 #include <FuzzySet.h>
 #include <FuzzyRuleAntecedent.h>
+#include <SoftwareSerial.h>
+//  - - - - - - -- - - - - -  *Controlador Fuzzy* - - - - - - - - - -- - - - - - - - - - - //
+//Variaveis para modelar Entrada do Comunicador Bluetooh
+char buffer1[12];            //Armazena o caracter recebido
+char aid_n;
+char ax_n[4];
+char ay_n[4];
+char aphi_n[3];
+char aid;
+char ax[4];
+char ay[4];
+char aphi[3];
+int i = 0;
+int j, id, x, y, phi, id_n, x_n, y_n, phi_n;
+String nos;
+String marcador;
 
+//  - - - - - - -- - - - - -  *Controlador Fuzzy* - - - - - - - - - -- - - - - - - - - - - //
 Fuzzy* fuzzy = new Fuzzy();
 //Angulo
 FuzzySet* zero = new FuzzySet(-30, 0, 0, 30);
@@ -134,6 +151,78 @@ void setup(){
  
   
   void loop(){
+    
+   while(mySerial.available())   // enquanto serial estiver funcionando
+  {
+    
+    buffer1[i] = Serial.read();          // lê até recebidos até uma mensagem estar completa
+    if (buffer1[i] == '\n')
+    {
+      if (buffer1[0] == 'C')             // se for o nosso marcador ele salva as informações nas variáveis _n
+      {
+        nos = buffer1;
+        for (j = 0; j < 12; j++)
+        {
+          if (i == 0)                    // salva nosso id    
+          {
+            aid_n = nos[i];
+          }
+              
+          if (i >= 1 || i <= 4)          // salva nosso x
+          {
+            ax_n[i] = nos[i];
+          }
+              
+           if (i >= 5 || i <= 8)        // salva nosso y
+           {
+             ay_n[i] = nos[i];
+           }
+               
+           if (i >= 9 || i <= 11)       // salva nosso ângulo
+           {
+             aphi_n[i] = nos[i];
+           }
+          }
+          id_n = (int)aid_n;
+          x_n = (int)ax_n;
+          y_n = (int)ay_n;
+          phi_n = (int)aphi_n;
+          i = -1;                        // no final do loop ele incrementa i, o -1 vai fazer o i ir para depois que incrementar para iniciar o recebiento de uma nova mensagem
+      }
+      
+      if (buffer1[0] != 'C' && buffer1[0] != 0)    // se for outro marcador ele salva as informações nas variáveis
+      {
+        marcador = buffer1;
+        for (j = 0; j < 12; j++)
+        {
+          if (i == 0)                  // salva id de outro  
+          {
+            aid = marcador[i];
+          }
+          if (i >= 1 || i <= 4)       // salva outro x
+          {
+            ax[i] = marcador[i];
+          }    
+           if (i >= 5 || i <= 8)      // salva y de outro
+           {
+             ay[i] = marcador[i];
+           }    
+           if (i >= 9 || i <= 11)      // salva ângulo de outro
+           {
+             aphi[i] = marcador[i];
+           }
+        }
+        id = (int)aid;
+        x = (int)ax;
+        y = (int)ay;
+        phi = (int)aphi;
+        i = -1;
+      }
+    
+    } i++;
+   }//fecha o while do bluetooh
+    
+  
   fuzzy->setInput(1, 10);
   fuzzy->setInput(2, 30);
   fuzzy->setInput(3, -15);
@@ -141,34 +230,28 @@ void setup(){
   fuzzy->fuzzify();
   
   Serial.print("Distancia: ");
-  Serial.print(close->getPertinence());
+  Serial.print(dmuitoPequena->getPertinence());
   Serial.print(", ");
-  Serial.print(safe->getPertinence());
+  Serial.print(distanciaMedia->getPertinence());
   Serial.print(", ");
-  Serial.println(distante->getPertinence());
+  Serial.println(dDistanciaGrande->getPertinence());
   
-  Serial.print("Velocidade: ");
-  Serial.print(stoped->getPertinence());
+  Serial.print("Angulo: ");
+  Serial.print(zero->getPertinence());
   Serial.print(", ");
-  Serial.print(slow->getPertinence());
+  Serial.print(pPequeno->getPertinence());
   Serial.print(", ");
-  Serial.print(normal->getPertinence());
+  Serial.print(pMedio->getPertinence());
   Serial.print(", ");
-  Serial.println(quick->getPertinence());
+  Serial.println(pGrande->getPertinence());
   
-  Serial.print("Temperatura: ");
-  Serial.print(cold->getPertinence());
-  Serial.print(", ");
-  Serial.print(good->getPertinence());
-  Serial.print(", ");
-  Serial.println(hot->getPertinence());
-
+ 
   float output1 = fuzzy->defuzzify(1);
   float output2 = fuzzy->defuzzify(2);
   
-  Serial.print("Saida risco: ");
+  Serial.print("Velocidade Roda Direita: ");
   Serial.print(output1);
-  Serial.print(", Saida velocidade: ");
+  Serial.print(", Velocidade Roda Esquerda: ");
   Serial.println(output2);
 
   delay(100000);
