@@ -221,12 +221,11 @@ void setup(){
       }
     
     } i++;
-   }//fecha o while do bluetooh
+  // }//fecha o while do bluetooh
     
   
-  fuzzy->setInput(1, 10);
-  fuzzy->setInput(2, 30);
-  fuzzy->setInput(3, -15);
+  fuzzy->setInput(1, 180);
+  fuzzy->setInput(2, 40);
 
   fuzzy->fuzzify();
   
@@ -256,4 +255,5 @@ void setup(){
   Serial.println(output2);
 
   delay(100000);
-}
+    }//fecha laço
+  }
