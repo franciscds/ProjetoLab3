@@ -57,7 +57,12 @@ FuzzySet* vMedia_e = new FuzzySet(50, 50, 50, 50);
 FuzzySet* vGrande_e = new FuzzySet(60, 60, 60, 60);
 FuzzySet* vMuitoGrande_e = new FuzzySet(70,70, 70, 70);
 void setup(){
+  
+  mySerial.begin(38400);
   Serial.begin(9600);
+  while (!Serial) {
+    ; 
+  }
   
   // FuzzyInput
   FuzzyInput* angulo = new FuzzyInput(1);
@@ -153,74 +158,78 @@ void setup(){
   
   void loop(){
     
-   while(mySerial.available())   // enquanto serial estiver funcionando
-  {
+while(mySerial.available()){          // enquanto serial estiver funcionando
     
-    buffer1[i] = Serial.read();          // lê até recebidos até uma mensagem estar completa
-    if (buffer1[i] == '\n')
+    Serial.println(mySerial.read());  // mostrar o que foi recebido no monitor serial
+    if (mySerial.read() == '\n')
     {
-      if (buffer1[0] == 'C')             // se for o nosso marcador ele salva as informações nas variáveis _n
+      for (i = 0; i < 12; i++)            // lê recebidos até uma mensagem estar completa
+        {
+          buffer1[i] = mySerial.read();
+        }
+      
+      if (buffer1[0] == 'C')              // se for o nosso marcador ele salva as informações nas variáveis _n   
       {
         nos = buffer1;
-        for (j = 0; j < 12; j++)
+        for (j = 0; j < 12; j++)          
         {
-          if (i == 0)                    // salva nosso id    
+          if (j == 0)                    // salva nosso id    
           {
-            aid_n = nos[i];
+            aid_n = nos[j];
           }
-              
-          if (i >= 1 || i <= 4)          // salva nosso x
+          if (j >= 1 || j <= 4)          // salva nosso x
           {
-            ax_n[i] = nos[i];
-          }
-              
-           if (i >= 5 || i <= 8)        // salva nosso y
+            ax_n[j] = nos[j];
+          }              
+           if (j >= 5 || j <= 8)        // salva nosso y
            {
-             ay_n[i] = nos[i];
-           }
-               
-           if (i >= 9 || i <= 11)       // salva nosso ângulo
+             ay_n[j] = nos[j];
+           }              
+           if (j >= 9 || j <= 11)       // salva nosso ângulo
            {
-             aphi_n[i] = nos[i];
+             aphi_n[j] = nos[j];
            }
           }
-          id_n = (int)aid_n;
-          x_n = (int)ax_n;
-          y_n = (int)ay_n;
-          phi_n = (int)aphi_n;
-          i = -1;                        // no final do loop ele incrementa i, o -1 vai fazer o i ir para depois que incrementar para iniciar o recebiento de uma nova mensagem
-      }
+          id_n = string.toInt(aid_n);
+          x_n = string.toInt(ax_n);
+          y_n = string.toInt(ay_n);
+          phi_n = string.toInt(aphi_n);
+      }                              
       
-      if (buffer1[0] != 'C' && buffer1[0] != 0)    // se for outro marcador ele salva as informações nas variáveis
+      if (buffer1[0] != 'C')    // se for outro marcador ele salva as informações nas variáveis
       {
         marcador = buffer1;
         for (j = 0; j < 12; j++)
         {
-          if (i == 0)                  // salva id de outro  
+          if (j == 0)                  // salva id de outro  
           {
-            aid = marcador[i];
+            aid = marcador[j];
           }
-          if (i >= 1 || i <= 4)       // salva outro x
+    
+          if (j >= 1 || j <= 4)       // salva outro x
           {
-            ax[i] = marcador[i];
-          }    
-           if (i >= 5 || i <= 8)      // salva y de outro
+            ax[j] = marcador[j];
+          }
+    
+           if (j >= 5 || j <= 8)      // salva y de outro
            {
-             ay[i] = marcador[i];
-           }    
-           if (i >= 9 || i <= 11)      // salva ângulo de outro
+             ay[j] = marcador[j];
+           }
+    
+           if (j >= 9 || j <= 11)      // salva ângulo de outro
            {
-             aphi[i] = marcador[i];
+             aphi[j] = marcador[j];
            }
         }
         id = string.toInt(aid);
         x = string.toInt(ax);
         y = string.toInt(ay);
         phi = string.toInt(aphi);
-        i = -1;
+        
       }
+    }
     
-    } i++;
+    
   // }//fecha o while do bluetooh
    CalculaDistancia( 
   
