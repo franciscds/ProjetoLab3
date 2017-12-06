@@ -246,6 +246,10 @@ void setup(){
 
   FuzzyRule* fuzzyRule12 = new FuzzyRule(12, distancePAndAnguloPGrande, thenVdisBAndVeisM);
   fuzzy->addFuzzyRule(fuzzyRule12);
+  
+   /* - - - - -- -  - -- - - - - - - - - - Fuzzy Rule distancia Grande e Angulo Positivo -----------------------*/
+
+   /* ***** * * * * * * * * * * * * * *  Angulo Negativo * * * * * * * * * * * * * * * * * * * * * * * */
 }
 // if distancia Pequena e Angulo Negativo pequeno
 //   FuzzyRuleAntecedent* distancePequenaAndAnguloPequenoNegativo = new FuzzyRuleAntecedent();
