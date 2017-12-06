@@ -143,6 +143,109 @@ void setup(){
 
   FuzzyRule* fuzzyRule3 = new FuzzyRule(3, distancePAndAnguloPositivoGrande, thenVdisBmAndVeZ);
   fuzzy->addFuzzyRule(fuzzyRule3);
+  
+    // Building FuzzyRule  distancia Muito Pequena e Angulo Zero -> vd = ve =Baixa;
+  FuzzyRuleAntecedent* distanceMPAndAnguloZero = new FuzzyRuleAntecedent();
+  distanceMPAndAnguloZero->joinWithAND(dmuitoPequena, zero);
+  
+  FuzzyRuleConsequent* thenVdisBAndVeismB = new FuzzyRuleConsequent();
+  thenVdisBAndVeismB->addOutput(vBaixa_d);
+  thenVdisBAndVeismB->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule4 = new FuzzyRule(4, distancePAndAnguloZero, thenVdisBAndVeismB);
+  fuzzy->addFuzzyRule(fuzzyRule4);
+  /* - - - - -- -  - -- - - - - - - - - - Fuzzy Rule distancia Pequena -----------------------*/
+  
+  // Building FuzzyRule  distancia Pequena e Angulo Zero -> vd = ve =Baixa;
+  FuzzyRuleAntecedent* distancePAndAnguloZero = new FuzzyRuleAntecedent();
+  distancePAndAnguloZero->joinWithAND(dPequena, zero);
+  
+  FuzzyRuleConsequent* thenVdisBAndVeisB = new FuzzyRuleConsequent();
+  thenVdisBAndVeisB->addOutput(vBaixa_d);
+  thenVdisBAndVeisB->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule5 = new FuzzyRule(5, distancePAndAnguloZero, thenVdisBAndVeisB);
+  fuzzy->addFuzzyRule(fuzzyRule5);
+  
+  // Building FuzzyRule  distancia Pequena e Angulo Positivo Pequeno -> vd = ve =Baixa;
+  FuzzyRuleAntecedent* distancePAndAnguloPPequeno = new FuzzyRuleAntecedent();
+  distancePAndAnguloPPequeno->joinWithAND(distanciaPequena, pPequeno);
+  
+  FuzzyRuleConsequent* thenVdisBAndVeisZ = new FuzzyRuleConsequent();
+  thenVdisBAndVeisZ->addOutput(vBaixa_d);
+  thenVdisBAndVeisZ->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule6 = new FuzzyRule(6, distancePAndAnguloPPequeno, thenVdisBAndVeisZ);
+  fuzzy->addFuzzyRule(fuzzyRule6);
+  
+  // Building FuzzyRule  distancia Pequena e Angulo Positivo Medio -> vd = Media  ve =Baixa;
+  FuzzyRuleAntecedent* distancePAndAnguloPMedio = new FuzzyRuleAntecedent();
+  distancePAndAnguloPMedio->joinWithAND(distanciaPequena, pMedio);
+  
+  FuzzyRuleConsequent* thenVdisMAndVeisB = new FuzzyRuleConsequent();
+  thenVdisMAndVeisB->addOutput(vMedio_d);
+  thenVdisMAndVeisB->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule7 = new FuzzyRule(7, distancePAndAnguloPMedio, thenVdisMAndVeisB);
+  fuzzy->addFuzzyRule(fuzzyRule7);
+  
+  // Building FuzzyRule  distancia Pequena e Angulo Positivo Grande -> vd = baixa  ve =Média;
+  FuzzyRuleAntecedent* distancePAndAnguloPGrande = new FuzzyRuleAntecedent();
+  distancePAndAnguloPGrande->joinWithAND(distanciaPequena, pGrande);
+  
+  FuzzyRuleConsequent* thenVdisBAndVeisM = new FuzzyRuleConsequent();
+  thenVdisBAndVeisM->addOutput(vMedio_d);
+  thenVdisBAndVeisM->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule8 = new FuzzyRule(8, distancePAndAnguloPGrande, thenVdisBAndVeisM);
+  fuzzy->addFuzzyRule(fuzzyRule8);
+  
+  
+  /* - - - - -- -  - -- - - - - - - - - - Fuzzy Rule distancia Media e Angulo Positivo -----------------------*/
+  
+  // Building FuzzyRule  distancia Media e Angulo Zero -> vd = ve = Média;
+  FuzzyRuleAntecedent* distanceMAndAnguloZero = new FuzzyRuleAntecedent();
+  distanceMAndAnguloZero->joinWithAND(distanciaMedia, zero);
+  
+  FuzzyRuleConsequent* thenVdisMAndVeisM = new FuzzyRuleConsequent();
+  thenVdisMAndVeisM->addOutput(vMedia_d);
+  thenVdisMAndVeisM->addOutput(vMedia_e);
+
+  FuzzyRule* fuzzyRule9 = new FuzzyRule(9, distanceMAndAnguloZero, thenVdisMAndVeisM);
+  fuzzy->addFuzzyRule(fuzzyRule9);
+  
+  // Building FuzzyRule  distancia Média e Angulo Positivo Pequeno -> vd=Baixa ve =media;
+  FuzzyRuleAntecedent* distanceMAndAnguloPPequeno = new FuzzyRuleAntecedent();
+  distanceMAndAnguloPPequeno->joinWithAND(distanciaMedia, pPequeno);
+  
+  FuzzyRuleConsequent* thenVdisBAndVeisM = new FuzzyRuleConsequent();
+  thenVdisBAndVeisM->addOutput(vBaixa_d);
+  thenVdisBAndVeisM->addOutput(vMedia_e);
+
+  FuzzyRule* fuzzyRule10 = new FuzzyRule(10, distanceMAndAnguloPPequeno, thenVdisBAndVeisM);
+  fuzzy->addFuzzyRule(fuzzyRule10);
+  
+  // Building FuzzyRule  distancia Média e Angulo Positivo Medio -> vd = Media  ve =Baixa;
+  FuzzyRuleAntecedent* distanceMAndAnguloPMedio = new FuzzyRuleAntecedent();
+  distanceMAndAnguloPMedio->joinWithAND(distanciaMedia, pMedio);
+  
+  FuzzyRuleConsequent* thenVdisBAndVeisM = new FuzzyRuleConsequent();
+  thenVdisBAndVeisM->addOutput(vBaixa_d);
+  thenVdisBAndVeisM->addOutput(vMedia_e);
+
+  FuzzyRule* fuzzyRule11 = new FuzzyRule(11, distanceMAndAnguloPMedio, thenVdisBAndVeisM);
+  fuzzy->addFuzzyRule(fuzzyRule11);
+  
+  // Building FuzzyRule  distancia Media e Angulo Positivo Grande -> vd = Media ve =Grande;
+  FuzzyRuleAntecedent* distancePAndAnguloPGrande = new FuzzyRuleAntecedent();
+  distancePAndAnguloPGrande->joinWithAND(distanciaPequena, pGrande);
+  
+  FuzzyRuleConsequent* thenVdisBAndVeisM = new FuzzyRuleConsequent();
+  thenVdisBAndVeisM->addOutput(vMedio_d);
+  thenVdisBAndVeisM->addOutput(vGrande_e);
+
+  FuzzyRule* fuzzyRule12 = new FuzzyRule(12, distancePAndAnguloPGrande, thenVdisBAndVeisM);
+  fuzzy->addFuzzyRule(fuzzyRule12);
 }
 // if distancia Pequena e Angulo Negativo pequeno
 //   FuzzyRuleAntecedent* distancePequenaAndAnguloPequenoNegativo = new FuzzyRuleAntecedent();
