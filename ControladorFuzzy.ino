@@ -213,16 +213,16 @@ void setup(){
              aphi[i] = marcador[i];
            }
         }
-        id = (int)aid;
-        x = (int)ax;
-        y = (int)ay;
-        phi = (int)aphi;
+        id = string.toInt(aid);
+        x = string.toInt(ax);
+        y = string.toInt(ay);
+        phi = string.toInt(aphi);
         i = -1;
       }
     
     } i++;
   // }//fecha o while do bluetooh
-    
+   CalculaDistancia( 
   
   fuzzy->setInput(1, 180);
   fuzzy->setInput(2, 40);
@@ -257,3 +257,13 @@ void setup(){
   delay(100000);
     }//fecha laço
   }
+double CalculaDistancia(double x1, double y1, double x2, double y2)
+{  
+
+    double diffx = x1 - x2;
+    double diffy = y1 - y2;
+    double diffx_sqr = square (diffx);
+    double diffy_sqr = square (diffy);
+    double distance = sqrt (diffx_sqr + diffy_sqr);
+    return distance;
+}
