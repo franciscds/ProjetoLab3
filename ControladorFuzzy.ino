@@ -58,6 +58,9 @@ FuzzySet* vGrande_e = new FuzzySet(60, 60, 60, 60);
 FuzzySet* vMuitoGrande_e = new FuzzySet(70,70, 70, 70);
 void setup(){
   
+  pinMode(OUTPUT,3);
+  pinMode(OUTPUT,4);
+
   mySerial.begin(38400);
   Serial.begin(9600);
   while (!Serial) {
@@ -246,24 +249,146 @@ void setup(){
 
   FuzzyRule* fuzzyRule12 = new FuzzyRule(12, distancePAndAnguloPGrande, thenVdisBAndVeisM);
   fuzzy->addFuzzyRule(fuzzyRule12);
-  
-   /* - - - - -- -  - -- - - - - - - - - - Fuzzy Rule distancia Grande e Angulo Positivo -----------------------*/
+ /* ***** * * * * * * * * * * * * * *  Angulo Negativo * * * * * * * * * * * * * * * * * * * * * * * */
 
-   /* ***** * * * * * * * * * * * * * *  Angulo Negativo * * * * * * * * * * * * * * * * * * * * * * * */
-}
-// if distancia Pequena e Angulo Negativo pequeno
-//   FuzzyRuleAntecedent* distancePequenaAndAnguloPequenoNegativo = new FuzzyRuleAntecedent();
-//  distanceCloseAndSpeedQuick->joinWithAND(distanciaPequena, nPequeno);
-//  
-//  FuzzyRuleConsequent* thenVdisBmAndVeZ = new FuzzyRuleConsequent();
-//  thenVdisBmAndVeZ->addOutput(vZero_d);
-//  thenVdisBmAndVeZ->addOutput(vBaixa_e);
-//
-//  FuzzyRule* fuzzyRule2 = new FuzzyRule(2, distancePAndAnguloPequenoNegativo, thenVdisBmAndVeZ);
-//  fuzzy->addFuzzyRule(fuzzyRule2);
- 
+ /* - - - - -- -  - -- - - - - - - - - - Fuzzy Rule distancia Grande e Angulo Positivo -----------------------*/
+  //      
+  // Building FuzzyRule  distancia Pequena e Angulo Negativo Pequeno -> vd = ve =Baixa;
+  FuzzyRuleAntecedent* distancePAndAngulonPequeno = new FuzzyRuleAntecedent();
+  distancePAndAngulonPequeno->joinWithAND(distanciaPequena, nPequeno);
   
-  void loop(){
+  FuzzyRuleConsequent* thenVdisZAndVeisB = new FuzzyRuleConsequent();
+  thenVdisZAndVeisB->addOutput(vBaixa_d);
+  thenVdisZAndVeisB->addOutput(vZero_e);
+
+  FuzzyRule* fuzzyRule13 = new FuzzyRule(13, distancePAndAngulonPequeno, thenVdisZAndVeisB);
+  fuzzy->addFuzzyRule(fuzzyRule13);
+  
+  // Building FuzzyRule  distancia Pequena e Angulo Negativo Medio -> vd = Media  ve =Baixa;
+  FuzzyRuleAntecedent* distancePAndAngulonMedio = new FuzzyRuleAntecedent();
+  distancePAndAngulonMedio->joinWithAND(distanciaPequena, nMedio);
+  
+  FuzzyRuleConsequent* thenVdisMAndVeisBn = new FuzzyRuleConsequent();
+  thenVdisMAndVeisBn->addOutput(vMedio_d);
+  thenVdisMAndVeisBn->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule14 = new FuzzyRule(14, distancePAndAngulonMedio, thenVdisMAndVeisBn);
+  fuzzy->addFuzzyRule(fuzzyRule14);
+  
+  // Building FuzzyRule  distancia Pequena e Angulo Negativo Grande -> vd = baixa  ve =Média;
+  FuzzyRuleAntecedent* distancePAndAngulonGrande = new FuzzyRuleAntecedent();
+  distancePAndAngulonGrande->joinWithAND(distanciaPequena, nGrande);
+  
+  FuzzyRuleConsequent* thenVdisGAndVeisB = new FuzzyRuleConsequent();
+  thenVdisGAndVeisB->addOutput(vGrande_d);
+  thenVdisGAndVeisB->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule15 = new FuzzyRule(15, distancePAndAngulonGrande, thenVdisGAndVeisB);
+  fuzzy->addFuzzyRule(fuzzyRule15);
+  
+  /* - - - - -- -  - -- - - - - - - - - - Fuzzy Rule distancia Media e Angulo Negativo -----------------------*/
+  
+  // Building FuzzyRule  distancia Media e Angulo Zero -> vd = ve = Média;
+  FuzzyRuleAntecedent* distanceMAndAnguloZeron = new FuzzyRuleAntecedent();
+  distanceMAndAnguloZero->joinWithAND(distanciaMedia, zero);
+  
+  FuzzyRuleConsequent* thenVdisMAndVeisB = new FuzzyRuleConsequent();
+  thenVdisMAndVeisB->addOutput(vMedia_d);
+  thenVdisMAndVeisB->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule16 = new FuzzyRule(16, distanceMAndAnguloZeron, thenVdisMAndVeisB);
+  fuzzy->addFuzzyRule(fuzzyRule16);
+  
+  // Building FuzzyRule  distancia Média e Angulo Negativo Pequeno -> vd=Baixa ve =media;
+  FuzzyRuleAntecedent* distanceMAndAnguloNPequeno = new FuzzyRuleAntecedent();
+  distanceMAndAnguloNPequeno->joinWithAND(distanciaMedia, nPequeno);
+  
+  FuzzyRuleConsequent* thenVdisMMAndVeisB = new FuzzyRuleConsequent();
+  thenVdisMMAndVeisB->addOutput(vMedia_d);
+  thenVdisMMAndVeisB->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule17 = new FuzzyRule(17, distanceMAndAnguloNPequeno, thenVdisMMAndVeisB);
+  fuzzy->addFuzzyRule(fuzzyRule17);
+  
+  // Building FuzzyRule  distancia Média e Angulo Negativo Medio -> vd = Media  ve =Baixa;
+  FuzzyRuleAntecedent* distanceMAndAnguloNMedio = new FuzzyRuleAntecedent();
+  distanceMAndAnguloNMedio->joinWithAND(distanciaMedia, nMedio);
+  
+  FuzzyRuleConsequent* thenVdisMediaAndVeisBaixa = new FuzzyRuleConsequent();
+  thenVdisMediaAndVeisBaixa->addOutput(vMedia_d);
+  thenVdisMediaAndVeisBaixa->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule18 = new FuzzyRule(18, distanceMAndAnguloNMedio, thenVdisMediaAndVeisBaixa);
+  fuzzy->addFuzzyRule(fuzzyRule18);
+  
+  // Building FuzzyRule  distancia Media e Angulo Negativo Grande -> vd = Media ve =Grande;
+  FuzzyRuleAntecedent* distanceMAndAngulonGrande = new FuzzyRuleAntecedent();
+  distanceMAndAngulonGrande->joinWithAND(distanciaMedia, nGrande);
+  
+  FuzzyRuleConsequent* thenVdisGrandeAndVeisBaixa = new FuzzyRuleConsequent();
+  thenVdisGrandeAndVeisBaixa->addOutput(vGrande_d);
+  thenVdisGrandeAndVeisBaixa->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule19 = new FuzzyRule(19, distanceMAndAngulonGrande, thenVdisGrandeAndVeisBaixa);
+  fuzzy->addFuzzyRule(fuzzyRule19);
+  
+  
+  /* - - - - -- -  - -- - - - - - - - - - Fuzzy Rule distancia Grande e Angulo Negativo -----------------------*/
+  
+  // Building FuzzyRule  distancia Media e Angulo Zero -> vd = ve = Média;
+  FuzzyRuleAntecedent* distanceGrandeAndAnguloZeron = new FuzzyRuleAntecedent();
+  distanceGrandeAndAnguloZeron->joinWithAND(distanciaGrande, zero);
+  
+  FuzzyRuleConsequent* thenVdisGAndVeisG = new FuzzyRuleConsequent();
+  thenVdisGAndVeisG->addOutput(vGrande_d);
+  thenVdisGAndVeisG->addOutput(vGrande_e);
+
+  FuzzyRule* fuzzyRule120 = new FuzzyRule(20, distanceGrandeAndAnguloZeron, thenVdisGAndVeisG);
+  fuzzy->addFuzzyRule(fuzzyRule20);
+  
+  // Building FuzzyRule  distancia Grande e Angulo Negativo Pequeno -> vd=Baixa ve =media;
+  FuzzyRuleAntecedent* distanceGAndAnguloNPequeno = new FuzzyRuleAntecedent();
+  distanceGAndAnguloNPequeno->joinWithAND(distanciaGrande, nPequeno);
+  
+  FuzzyRuleConsequent* thenVdisMediaAndVeisBaixa = new FuzzyRuleConsequent();
+  thenVdisMediaAndVeisBaixa->addOutput(vMedia_d);
+  thenVdisMediaAndVeisBaixa->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule21 = new FuzzyRule(21, distanceGAndAnguloNPequeno, thenVdisMediaAndVeisBaixa);
+  fuzzy->addFuzzyRule(fuzzyRule21);
+  
+  // Building FuzzyRule  distancia Grande e Angulo Negativo Medio -> vd = Media  ve =Baixa;
+  FuzzyRuleAntecedent* distanceGAndAnguloNMedio = new FuzzyRuleAntecedent();
+  distanceGAndAnguloNMedio->joinWithAND(distanciaGrande, nMedio);
+  
+  FuzzyRuleConsequent* thenVdisGrandeAndVeisBaixa = new FuzzyRuleConsequent();
+  thenVdisGrandeAndVeisBaixa->addOutput(vGrande_d);
+  thenVdisGrandeAndVeisBaixa->addOutput(vBaixa_e);
+
+  FuzzyRule* fuzzyRule22 = new FuzzyRule(22, distanceGAndAnguloNMedio, thenVdisGrandeAndVeisBaixa);
+  fuzzy->addFuzzyRule(fuzzyRule22);
+  
+  // Building FuzzyRule  distancia Grande e Angulo Negativo Grande -> vd = Media ve =Grande;
+  FuzzyRuleAntecedent* distanceGrandeAndAngulonGrande = new FuzzyRuleAntecedent();
+  distanceGrandeAndAngulonGrande->joinWithAND(distanciaGrande, nGrande);
+  
+  FuzzyRuleConsequent* thenVdisGrandeAndVeisMedia = new FuzzyRuleConsequent();
+  thenVdisGrandeAndVeisMedia->addOutput(vGrande_d);
+  thenVdisGrandeAndVeisMedia->addOutput(vMedia_e);
+
+  FuzzyRule* fuzzyRule23= new FuzzyRule(23, distanceGrandeAndAngulonGrande, thenVdisGrandeAndVeisMedia);
+  fuzzy->addFuzzyRule(fuzzyRule23);
+  //}
+
+  /*Verifica Domínio*/
+  
+  /*Modela em Pulso*/
+  //transforma 0-70 em 0 a 255
+  
+}
+
+  
+void loop(){
     
 while(mySerial.available()){          // enquanto serial estiver funcionando
     
@@ -338,7 +463,7 @@ while(mySerial.available()){          // enquanto serial estiver funcionando
     
     
   // }//fecha o while do bluetooh
-   CalculaDistancia( 
+   double distancia = CalculaDistancia(x_n,y_n,x,y);
   
   fuzzy->setInput(1, 180);
   fuzzy->setInput(2, 40);
@@ -362,14 +487,20 @@ while(mySerial.available()){          // enquanto serial estiver funcionando
   Serial.println(pGrande->getPertinence());
   
  
-  float output1 = fuzzy->defuzzify(1);
-  float output2 = fuzzy->defuzzify(2);
+  float v1 = fuzzy->defuzzify(1);
+  float v2 = fuzzy->defuzzify(2);
   
   Serial.print("Velocidade Roda Direita: ");
-  Serial.print(output1);
+  Serial.print(v1);
   Serial.print(", Velocidade Roda Esquerda: ");
-  Serial.println(output2);
-
+  Serial.println(v2);
+   //Modulando em pulso
+  velocidadeD = (v1/70)*255;
+  velocidadeE = (v2/70)*255;
+  
+  analogWrite(3,velocidadeD);
+  analogWrite(4,velocidadeE);
+  
   delay(100000);
     }//fecha laço
   }
