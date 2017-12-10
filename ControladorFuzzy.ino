@@ -34,9 +34,9 @@ FuzzySet* pPequeno = new FuzzySet(0, 30, 30, 60);
 FuzzySet* pMedio = new FuzzySet(60, 120, 120, 180);
 FuzzySet* pGrande = new FuzzySet(120, 180, 180, 180);
 
-FuzzySet* nPequeno = new FuzzySet(0, -30, -30, -60);
-FuzzySet* nMedio = new FuzzySet(-60, -120, -120, -180);
-FuzzySet* nGrande = new FuzzySet(-120, -180, -180, -180);
+FuzzySet* nPequeno = new FuzzySet(-60, -30, -30, 0);
+FuzzySet* nMedio = new FuzzySet(-180, -120, -120, -60);
+FuzzySet* nGrande = new FuzzySet(-180, -180, -180, -120);
 
 //distancia
 FuzzySet* dmuitoPequena = new FuzzySet(0, 0, 0, 125);
